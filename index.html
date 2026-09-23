@@ -1551,7 +1551,7 @@ document.addEventListener("visibilitychange",()=>{if(!document.hidden&&AUTH.user
 sb.auth.onAuthStateChange(async(ev,session)=>{
  if(ev==="PASSWORD_RECOVERY"){AUTH.recovery=true;AUTH.user=session&&session.user;AUTH.ready=true;render();return}
  const u=session?session.user:null;if((u&&u.id)===(AUTH.user&&AUTH.user.id)&&AUTH.ready)return;
- AUTH.user=u;if(u){await loadState();await refreshSub(false)}AUTH.ready=true;render()});
+ AUTH.user=u;if(u){setTimeout(async()=>{try{await loadState();await refreshSub(false)}catch(e){console.error(e)}finally{AUTH.ready=true;render()}},0);return}AUTH.ready=true;render()});setTimeout(()=>{if(!AUTH.ready){AUTH.ready=true;render()}},8000);
 
 function authScreen(){const m=AUTH.mode,rec=AUTH.recovery;
  return `<main class="onb"><div style="text-align:center;margin-top:12px"><img class="logo-float" src="${LOGO}" alt="" width="120" height="120" style="border-radius:32px;display:block;margin:0 auto 14px"><h1 style="font-size:2.1rem;color:var(--lil-ink)">Ninho</h1><p class="muted">Sua jornada com o bebê</p></div>
